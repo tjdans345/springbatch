@@ -24,11 +24,11 @@ public class ExampleFlowJobConfig {
     @Bean
     public Job ExampleJob() {
 
-        return jobBuilderFactory.get("exampleJob")
+         return jobBuilderFactory.get("exampleJob")
                 .start(startStep())
                 .on("FAILED") //startStep의 ExitStatus가 FAILED일 경우
                 .to(failOverStep()) // failOver Step을 실행시킨다.
-                .on("*") // faileOver Step의 결과에 상관없이
+                .on("*") // failOver Step의 결과에 상관없이
                 .to(writeStep()) // write Step을 실행시킨다.
                 .on("*") // write Step의 결과와 상관없이
                 .end() // Flow를 종료시킨다.
@@ -40,9 +40,11 @@ public class ExampleFlowJobConfig {
                 .end() // Flow를 종료시킨다.
 
                 .from(startStep()) // startStep의 결과가 FAILED, COMPLETED가 아닌
-                .on("*")
-                .to(writeStep())
-
+                .on("*") // 모든경우
+                .to(writeStep()) // write Step을 실행시킨다.
+                .on("*") // write Step의 결과와 상관없이
+                .end() // Flow를 종료시킨다.
+                .end().build();
     }
 
     @Bean
