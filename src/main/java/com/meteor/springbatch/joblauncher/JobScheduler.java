@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * JobLauncher로 Job 실행 시키기.
+ * JobLauncher 로 Job 실행 시키기.
  */
 @RequiredArgsConstructor
 @Configuration
