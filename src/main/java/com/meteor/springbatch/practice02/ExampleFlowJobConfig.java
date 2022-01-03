@@ -25,7 +25,23 @@ public class ExampleFlowJobConfig {
     public Job ExampleJob() {
 
         return jobBuilderFactory.get("exampleJob")
-                .start()
+                .start(startStep())
+                .on("FAILED") //startStep의 ExitStatus가 FAILED일 경우
+                .to(failOverStep()) // failOver Step을 실행시킨다.
+                .on("*") // faileOver Step의 결과에 상관없이
+                .to(writeStep()) // write Step을 실행시킨다.
+                .on("*") // write Step의 결과와 상관없이
+                .end() // Flow를 종료시킨다.
+
+                .from(startStep()) // startStep이 FAILED가 아니고
+                .on("COMPLETED") //COMPLETED일 경우
+                .to(processStep()) // process Step을 실행시킨다.
+                .on("*")
+                .end() // Flow를 종료시킨다.
+
+                .from(startStep()) // startStep의 결과가 FAILED, COMPLETED가 아닌
+                .on("*")
+                .to(writeStep())
 
     }
 
@@ -36,7 +52,7 @@ public class ExampleFlowJobConfig {
                     log.info("Start Step");
 
                     String result = "COMPLETED";
-//                    String result = "FAIL";
+//                    String result = "FAILED";
 //                    String result = "UNKNOWN";
                     // Flow에서 on은 RepeatStatus가 아닌 ExitStatus를 바라봄.
                     if(result.equals("COMPLETED")) {
@@ -60,7 +76,22 @@ public class ExampleFlowJobConfig {
     }
 
     @Bean
-    public
+    public Step processStep() {
+        return stepBuilderFactory.get("processStep")
+                .tasklet((contribution, chunkContext) -> {
+                    log.info("Process Step!");
+                    return RepeatStatus.FINISHED;
+                }).build();
+    }
+
+    @Bean
+    public Step writeStep() {
+        return stepBuilderFactory.get("writeStep")
+                .tasklet((contribution, chunkContext) -> {
+                    log.info("Write Step");
+                    return RepeatStatus.FINISHED;
+                }).build();
+    }
 
 
 
