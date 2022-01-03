@@ -1,6 +1,6 @@
-package com.meteor.springbatch.jobs;
+package com.meteor.springbatch.practice01.jobs;
 
-import com.meteor.springbatch.taskiets.TutorialTasklet;
+import com.meteor.springbatch.practice01.taskiets.TutorialTasklet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -16,17 +16,16 @@ public class TutorialConfig {
     private final JobBuilderFactory jobBuilderFactory; // Job 빌더 생성용
     private final StepBuilderFactory stepBuilderFactory; // Step 빌더 생성용
 
-    // JobBuilderFactory를 통해서 tutorialJob을 생성
+    // JobBuilderFactory 를 통해서 tutorialJob 을 생성
     @Bean
     public Job tutorialJob() {
-        int a = 1;
         return jobBuilderFactory.get("tutorialJob")
                 .start(tutorialStep())
                 .next(tutorialStep2())
                 .build();
     }
 
-    // StepBuilderFactory를 통해서 tutorialStep을 생성
+    // StepBuilderFactory 를 통해서 tutorialStep 을 생성
     @Bean
     public Step tutorialStep() {
         return stepBuilderFactory.get("tutorialStep")

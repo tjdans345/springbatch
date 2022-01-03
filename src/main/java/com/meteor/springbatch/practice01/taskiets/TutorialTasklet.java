@@ -1,4 +1,4 @@
-package com.meteor.springbatch.taskiets;
+package com.meteor.springbatch.practice01.taskiets;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;

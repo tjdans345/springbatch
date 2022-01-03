@@ -1,4 +1,4 @@
-package com.meteor.springbatch.schedulers;
+package com.meteor.springbatch.practice01.schedulers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
