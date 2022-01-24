@@ -39,7 +39,6 @@ public class ExampleJobConfig {
 
     @Bean
     public Job ExampleJob() throws Exception {
-
         return jobBuilderFactory.get("exampleJob")
                 .start(Step())
                 .build();
